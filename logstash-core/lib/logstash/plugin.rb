@@ -3,7 +3,6 @@ require "logstash/namespace"
 require "logstash/logging"
 require "logstash/config/mixin"
 require "logstash/instrument/null_metric"
-require "cabin"
 require "concurrent"
 require "securerandom"
 require "logstash/plugins/registry"
@@ -47,7 +46,7 @@ class LogStash::Plugin
 
   def initialize(params=nil)
     @params = LogStash::Util.deep_clone(params)
-    @logger = Cabin::Channel.get(LogStash)
+    @logger = org.apache.logging.log4j.LogManager.getLogger("LogStash")
   end
 
   # Return a uniq ID for this plugin configuration, by default
@@ -168,7 +167,7 @@ class LogStash::Plugin
 
   # @return [Cabin::Channel] logger channel for class methods
   def self.logger
-    @logger ||= Cabin::Channel.get(LogStash)
+    @logger ||= org.apache.logging.log4j.LogManager.getLogger("LogStash")
   end
 
 end # class LogStash::Plugin

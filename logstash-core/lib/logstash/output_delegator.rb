@@ -85,7 +85,7 @@ module LogStash class OutputDelegator
     @workers << @klass.new(@config)
     @workers.first.register # Needed in case register calls `workers_not_supported`
 
-    @logger.debug("Will start workers for output", :worker_count => target_worker_count, :class => @klass.name)
+    @logger.debug("Will start workers for output", "worker_count" => target_worker_count, "class" => @klass.name)
 
     # Threadsafe versions don't need additional workers
     setup_additional_workers!(target_worker_count) unless @threadsafe
