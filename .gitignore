@@ -21,7 +21,6 @@ data
 etc/jira-output.conf
 coverage/*
 .VERSION.mk
-.idea/*
 spec/reports
 rspec.xml
 .install-done
@@ -33,4 +32,8 @@ qa/.vagrant
 qa/.rspec
 qa/acceptance/.vagrant
 qa/Gemfile.lock
-
+*.idea
+*.gradle
+*.ipr
+*.iml
+*.iws
