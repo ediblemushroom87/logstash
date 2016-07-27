@@ -18,6 +18,7 @@ require "logstash/settings"
 require "logstash/version"
 
 class LogStash::Runner < Clamp::StrictCommand
+  include LogStash::Util::Loggable
   # The `path.settings` need to be defined in the runner instead of the `logstash-core/lib/logstash/environment.rb`
   # because the `Environment::LOGSTASH_HOME` doesn't exist in the context of the `logstash-core` gem.
   # 
@@ -134,7 +135,6 @@ class LogStash::Runner < Clamp::StrictCommand
   attr_reader :agent
 
   def initialize(*args)
-    @logger = org.apache.logging.log4j.LogManager.getLogger("LogStash")
     @settings = LogStash::SETTINGS
     super(*args)
   end
@@ -149,7 +149,7 @@ class LogStash::Runner < Clamp::StrictCommand
     rescue => e
       @logger.subscribe(STDOUT)
       @logger.warn("Logstash has a new settings file which defines start up time settings. This file is typically located in $LS_HOME/config or /etc/logstash. If you installed Logstash through a package and are starting it manually please specify the location to this settings file by passing in \"--path.settings=/path/..\" in the command line options")
-      @logger.fatal("Failed to load settings file from \"path.settings\". Aborting...", "path.settings" => LogStash::SETTINGS.get("path.settings"), "exception" => e.class, "message" => e.message)
+      @logger.fatal("Failed to load settings file from \"path.settings\". Aborting...", "path.settings" => LogStash::SETTINGS.get("path.settings"), :exception => e.class, :message => e.message)
       exit(-1)
     end
 
@@ -256,7 +256,7 @@ class LogStash::Runner < Clamp::StrictCommand
     if @logger.is_info_enabled
       show_version_ruby
       show_version_java if LogStash::Environment.jruby?
-      show_gems if @logger.is_debug_enabled
+      show_gems if @logger.debug?
     end
   end # def show_version
 
@@ -300,7 +300,7 @@ class LogStash::Runner < Clamp::StrictCommand
     logging_ctx.getRootLogger().setLevel(org.apache.logging.log4j.Level.getLevel(level))
     logging_ctx.updateLoggers()
 
-    if setting("config.debug") && @logger.is_debug_enabled
+    if setting("config.debug") && @logger.debug?
       @logger.warn("--config.debug was specified, but log.level was not set to \'debug\'! No config info will be logged.")
     end
 
