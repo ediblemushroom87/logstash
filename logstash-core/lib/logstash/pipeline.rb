@@ -45,7 +45,7 @@ module LogStash; class Pipeline
   ]
 
   def initialize(config_str, settings = LogStash::SETTINGS, namespaced_metric = nil)
-    @logger = self.logger
+    @logger = self.class.logger
     @config_str = config_str
     @settings = settings
     @pipeline_id = @settings.get_value("pipeline.id") || self.object_id
