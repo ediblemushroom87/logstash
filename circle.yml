@@ -1,7 +1,10 @@
 machine:
   ruby:
-    version: jruby-9.0.4.0
+    version: jruby-1.7.19
 
 test:
   override:
-    - bundle exec rake spec
+    - rake test:install-core
+    - echo "--order rand" > .rspec
+    - echo "--format documentation" >> .rspec
+    - rake test:core
