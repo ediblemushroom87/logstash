@@ -4,5 +4,4 @@ machine:
 
 test:
   override:
-    - bundle install rake
     - bundle exec rake spec
