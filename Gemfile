@@ -2,6 +2,7 @@
 # If you modify this file manually all comments and formatting will be lost.
 
 source "https://rubygems.org"
+gem "rake"
 gem "logstash-core", :path => "./logstash-core"
 gem "logstash-core-event-java", :path => "./logstash-core-event-java"
 gem "logstash-core-plugin-api", :path => "./logstash-core-plugin-api"
